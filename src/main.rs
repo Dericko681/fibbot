@@ -1,11 +1,11 @@
 mod extract;
 mod fibonacci;
 mod get_pr;
-mod post_comment;
+// mod post_comment;
 use extract::extract_numbers;
 use fibonacci::fibonacci_up_to;
 use get_pr::get_pr_body;
-use post_comment::post_comment;
+// use post_comment::post_comment;
 
 fn main() {
     // Example values
@@ -24,11 +24,11 @@ fn main() {
                     "Fibonacci numbers up to {}: {:?}",
                     number, fibonacci_results
                 );
-                //    println!("The fibonacci of {} is: {:?}", number,fibonacci_up_to(number));
-                match post_comment(pr_number, owner, repo, comment_body) {
-                    Ok(()) => println!("Comment posted successfully!"),
-                    Err(e) => eprintln!("Error posting comment: {}", e),
-                }
+                   println!("The fibonacci of {} is: {:?}", number,fibonacci_up_to(number));
+                // match post_comment(pr_number, owner, repo, comment_body) {
+                //     Ok(()) => println!("Comment posted successfully!"),
+                //     Err(e) => eprintln!("Error posting comment: {}", e),
+                // }
             }
         }
         Err(e) => eprintln!("Error fetching PR body: {}", e),

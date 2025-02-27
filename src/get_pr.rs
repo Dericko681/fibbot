@@ -8,7 +8,7 @@ pub fn get_pr_body(
 ) -> Result<String, Box<dyn std::error::Error>> {
     let token = env::var("GITHUB_TOKEN")?;
     let url = format!(
-        "https://api.github.com/repos/{}/{}/pulls/{}",
+        "https://api.github.com/repos/{}/{}/pulls/{}/files",
         owner, repo, pr_number
     );
 
