@@ -2,7 +2,7 @@ use reqwest::blocking::Client;
 use std::env;
 
 pub fn get_pr_body(
-    pr_number: u64,
+    pr_number: u32,
     owner: &str,
     repo: &str,
 ) -> Result<String, Box<dyn std::error::Error>> {
@@ -32,7 +32,7 @@ pub fn get_pr_body(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use mockito::{mock, Matcher};
+    use mockito::mock;
 
     #[test]
     fn test_get_pr_body_success() {
