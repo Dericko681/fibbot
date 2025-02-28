@@ -27,11 +27,12 @@ fn main() {
                 );
                 println!("the comments is:{}", comment_body);
                 println!("The fibonacci of {} is: {:?}", number,fibonacci_up_to(number));
+                let _ = post_comment(pr_number, owner, repo, comment_body);
                
-                match post_comment(pr_number, owner, repo, comment_body) {
-                    Ok(_) => println!("Comment posted successfully!"),
-                    Err(e) => eprintln!("Error posting comment: {}", e),
-                }
+                // match post_comment(pr_number, owner, repo, comment_body) {
+                //     Ok(_) => println!("Comment posted successfully!"),
+                //     Err(e) => eprintln!("Error posting comment: {}", e),
+                // }
             }
         }
         Err(e) => eprintln!("Error fetching PR body: {}", e),
