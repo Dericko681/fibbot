@@ -2,7 +2,7 @@ use reqwest::blocking::Client;
 use std::env;
 
 pub fn get_pr_body(
-    pr_number: u32,
+    pr_number: u64,
     owner: &str,
     repo: &str,
 ) -> Result<String, Box<dyn std::error::Error>> {
