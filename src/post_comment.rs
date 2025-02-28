@@ -1,21 +1,13 @@
-use reqwest::blocking::Client;
-use std::env;
+use octocrab::Octocrab;
+use octocrab::models::Comment;
 
-pub fn post_comment(pr_number: u32, owner: &str, repo: &str, comment: String) -> Result<(), Box<dyn std::error::Error>> {
-    let token = env::var("GITHUB_TOKEN")?;
-    let url = format!("https://api.github.com/repos/{}/{}/pulls/{}/comments", owner, repo, pr_number);
 
-    let client = Client::new();
-    let response = client
-        .post(&url)
-        .header("User-Agent", "rust-github-action")
-        .bearer_auth(token)
-        .json(&serde_json::json!({ "body": comment }))
-        .send()?;
-
-    if response.status().is_success() {
-        Ok(())
-    } else {
-        Err(format!("Failed to post comment: {} - {}", response.status(), comment).into())
-    }
+async fn comment_on_pr(repo_owner: &str, repo_name: &str, pr_number: u64, comment: &str) -> Result<Comment, Box<dyn std::error::Error>> {
+    let octocrab = Octocrab::default();
+    let comment_response = octocrab.pulls(repo_owner, repo_name)
+                                    .comments(pr_number)
+                                    .create(comment)
+                                    .await?;
+                                    
+    Ok(comment_response)
 }
