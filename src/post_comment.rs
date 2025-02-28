@@ -1,7 +1,7 @@
 use reqwest::blocking::Client;
 use std::env;
 
-pub fn post_comment(pr_number: u64, owner: &str, repo: &str, comment: String) -> Result<(), Box<dyn std::error::Error>> {
+pub fn post_comment(pr_number: u32, owner: &str, repo: &str, comment: Vec<Vec<u32>>) -> Result<(), Box<dyn std::error::Error>> {
     let token = env::var("GITHUB_TOKEN")?;
     let url = format!("https://api.github.com/repos/{}/{}/issues/{}/comments", owner, repo, pr_number);
 
@@ -17,6 +17,6 @@ pub fn post_comment(pr_number: u64, owner: &str, repo: &str, comment: String) ->
         println!("the number has been posted");
         Ok(())
     } else {
-        Err(format!("Failed to post comment: {} - {}", response.status(), comment).into())
+        Err(format!("Failed to post comment: {} - {:?}", response.status(), comment).into())
     }
 }
