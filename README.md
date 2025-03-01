@@ -4,6 +4,8 @@
 
 Develop a GitHub Action in Rust that scans pull request content for numbers, calculates their Fibonacci numbers, and posts a comment with the results. The action will support two parameters (e.g., a flag to enable Fibonacci calculation and a threshold limit).
 
+
+
 ### 6-Day Milestone Plan with Daily Deliverables
 
 ### **Day 1: Kickoff & Action Review**
