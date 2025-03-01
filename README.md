@@ -1,13 +1,13 @@
 # Project: "FibBot" GitHub Action
 
-**Overview:**
+**Overview:**24
 
-Develop a GitHub Action in Rust that scans pull request content for numbers, calculates their Fibonacci numbers, and posts a comment with the results. The action will support two parameters (e.g., a flag to enable Fibonacci calculation and a threshold limit).
+Develop a GitHub Action in Rust that scans pull request content for numbers, calculates their Fibonacci numbers, and posts a comment with the results. The action will support two parameters (e.g., a flag to enable Fibonacci calculation and a threshold limit).34
 
 ### 6-Day Milestone Plan with Daily Deliverables
 
 ### **Day 1: Kickoff & Action Review**
-
+4
 - **Milestone 1:** **Review GitHub Actions Fundamentals**
     - **Deliverable:** A summary or checklist of key concepts on creating custom GitHub Actions, especially for non-JavaScript implementations.
 - **Milestone 2:** **Project Initialization**
