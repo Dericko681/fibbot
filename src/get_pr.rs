@@ -1,32 +1,31 @@
+// use reqwest;
+// use serde_json::Value;
 
-async fn read_pull_request_and_extract() -> Result<Vec<u32>, Box<dyn std::error::Error>> {
-    // Get GitHub token and other parameters from the environment
-    let token = env::var("GITHUB_TOKEN")?;
-    let pr_number: u32 = env::var("PR_NUMBER")?.parse()?;
+// pub async fn get_pr_files(
+//     owner: &str,
+//     repo: &str,
+//     pr_number: u32,
+// ) -> Result<String, Box<dyn std::error::Error>> {
+//     let url = format!("https://api.github.com/repos/{}/{}/pulls/{}/files", owner, repo, pr_number);
+//     let response = reqwest::get(url).await?;
 
-    // Fetch the pull request content
-    let url = format!(
-        "https://api.github.com/repos/{}/{}/pulls/{}",
-        env::var("GITHUB_REPOSITORY_OWNER")?,
-        env::var("GITHUB_REPOSITORY_NAME")?,
-        pr_number
-    );
+// use octocrab::models::repos::Content;
 
-    let client = Client::new();
-    let response: Value = client
-        .get(&url)
-        .header("User-Agent", "reqwest")
-        .bearer_auth(token)
-        .send()
-        .await?
-        .json()
-        .await?;
-
-    // Extract the body of the pull request
-    let body = response["body"].as_str().unwrap_or("");
-
-    // Call the extract function
-    let extracted_numbers = extract_numbers(body);
-
-    Ok(extracted_numbers)
+//     if response.status().is_success() {
+//         let json: Value = response.json().await?;
+//         let files = json["files"].as_array().ok_or("Files not found")?;
+//         let file_list = files
+//             .iter()
+//             .map(|file| file["filename"].as_str().unwrap().to_string())
+//             .collect::<Vec<String>>()
+//             .join("\n");
+//         Ok(file_list)
+//     } else {
+//         Err(format!("Failed to retrieve PR {}: {}", pr_number, response.status()).into())
+//     }
+// }
+pub async fn get_pr_body(pr_number:u64)-> String{
+   let content = octocrab::instance().pulls("Dericko681", "fibbot").list_files(pr_number).await;
+    let content = content.unwrap().items.first().unwrap().patch.clone().unwrap();
+   content
 }

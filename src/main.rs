@@ -1,49 +1,47 @@
+mod extract;
+mod fibonacci;
+mod get_pr;
+mod post_comment;
+use extract::extract_numbers;
+use fibonacci::fibonacci;
+use get_pr::get_pr_body;
+use post_comment::post_comment;
 use std::env;
-mod fibonacci; mod extract; mod get_pr;
-
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // Get inputs from environment variables
-    let enable_fib = env::var("INPUT_ENABLE_FIB").unwrap_or("true".to_string());
-    let max_threshold: u32 = env::var("INPUT_MAX_THRESHOLD")
-        .unwrap_or("10".to_string())
-        .parse()
-        .unwrap_or(10); // Default to 10 if parsing fails
+async fn main() {
+   
 
-    // Log the inputs
-    println!("Enable Fibonacci: {}", enable_fib);
-    println!("Max Threshold: {}", max_threshold);
+    //     // Example values
+    //     // let owner = "dericko681";
+    //     // let repo = "fibbot";
+    //     // let pr_number: u32 = 4;
 
-    // Validate max_threshold
-    if max_threshold == 0 {
-        println!("Error: max_threshold must be greater than 0.");
-        std::process::exit(1);
-    }
-
-    let extracted_numbers = read_pull_request_and_extract().await?;
-
-    for number in extracted_numbers {
-        let fib_sequence = fibonacci_up_to(number);
-        println!("Extracted Number: {}, Fibonacci Sequence: {:?}", number, fib_sequence);
-    }
-
-    Ok(())
-
+    let pr_number: u64 = env::var("PR_NUMBER")
+    .expect("COULDN'T GET PR_NUMBER")
+    .parse::<u64>()
+    .expect("invalid pr number");
     
-}
+
+    let pr_numbers = get_pr_body(pr_number).await;
+    println!("Extracted numbers: {:?}", pr_numbers);
+
+    let pr_fib = extract_numbers(pr_numbers);
 
 
-#[cfg(test)]
-mod tests {
-    use super::*;
 
-    #[test]
-    fn test_parameter_parsing() {
-        let enable_fib = "true".to_string();
-        let max_threshold: u32 = "10".parse().unwrap();
-
-        assert_eq!(enable_fib, "true");
-        assert_eq!(max_threshold, 10);
+    if pr_fib.is_empty() {
+        println!("No numbers found in this pull_request.");
     }
-}
+    let mut response =
+        String::from("#### Fibonacci output of each number in the pull_request is:\n");
+    for &num in &pr_fib {
+        let fib = fibonacci(num);
+        response.push_str(&format!("- Fibonacci({}) = {}\n", num, fib));
+    }
+        if let Err(e) = post_comment(&response).await {
+            eprintln!("Error posting comment: {}", e);
+        }
+        // }
+        // Err(e) => eprintln!("Error fetching PR body: {}", e),
+    }
 
